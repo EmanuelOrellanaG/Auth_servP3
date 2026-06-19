@@ -29,7 +29,7 @@ public class AuthService {
     public AuthResponse register(RegisterDTO dto) {
 
         UsuarioAuth usuario = new UsuarioAuth();
-        usuario.setUsername(dto.getUsername());
+        usuario.setUsername(dto.getEmail());
         usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
         usuario.setRol("USER");
 
