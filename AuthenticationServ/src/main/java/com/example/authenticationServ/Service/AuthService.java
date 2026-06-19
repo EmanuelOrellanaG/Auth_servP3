@@ -42,7 +42,7 @@ public class AuthService {
 
     public AuthResponse login(LoginDTO dto) {
 
-        UsuarioAuth usuario = repository.findByUsername(dto.getUsername())
+        UsuarioAuth usuario = repository.findByUsername(dto.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuario no existe"));
 
         if (!passwordEncoder.matches(dto.getPassword(), usuario.getPassword())) {
