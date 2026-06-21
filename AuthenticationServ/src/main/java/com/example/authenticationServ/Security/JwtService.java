@@ -1,5 +1,6 @@
 package com.example.authenticationServ.Security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -19,16 +20,29 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
 
         SecretKey key = Keys.hmacShaKeyFor(
                 secret.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.builder()
                 .subject(username)
+                .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key)
                 .compact();
+    }
+
+    public Claims validateToken(String token) {
+
+        SecretKey key = Keys.hmacShaKeyFor(
+                secret.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

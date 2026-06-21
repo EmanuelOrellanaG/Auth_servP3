@@ -35,7 +35,7 @@ public class AuthService {
 
         repository.save(usuario);
 
-        String token = jwtService.generateToken(usuario.getUsername());
+        String token = jwtService.generateToken(usuario.getUsername(), usuario.getRol());
 
         return new AuthResponse(token);
     }
@@ -49,7 +49,7 @@ public class AuthService {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        String token = jwtService.generateToken(usuario.getUsername());
+        String token = jwtService.generateToken(usuario.getUsername(), usuario.getRol());
 
         return new AuthResponse(token);
     }
